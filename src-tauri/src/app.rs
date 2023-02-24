@@ -2,13 +2,13 @@ use anyhow::Result;
 
 use crate::repository::Repository;
 
-pub enum ColorMode {
+pub enum Theme {
     Dark,
     Light
 }
 
 pub struct Settings {
-    pub color: ColorMode
+    pub color: Theme
 }
 
 // here is application logic
