@@ -1,20 +1,4 @@
-use std::{str::FromStr};
-
-pub enum GitCommand {
-    Log,
-    Merge,
-    Pull,
-    Push,
-    Commit,
-    Checkout,
-    Branch
-}
-
-pub struct GitAction {
-    command: GitCommand,
-    working_branch: String,
-    target_branch: String
-}
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct Commit {
@@ -69,4 +53,3 @@ impl FromStr for Commit {
         return Ok(commit);
     }
 }
-

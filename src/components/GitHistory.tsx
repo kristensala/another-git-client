@@ -16,20 +16,22 @@ export default function GitHistory() {
     return (
         <div class="git-history-container">
             <table class="history-table">
-                <tr>
-                    <th>Graph</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>Date</th>
-                </tr>
-                <For each={commits()}>{(commit, _) =>
+                <tbody>
                     <tr>
-                        <td></td>
-                        <td>{commit.Description}</td>
-                        <td>{commit.Author}</td>
-                        <td>{commit.Date}</td>
+                        <th>Graph</th>
+                        <th>Description</th>
+                        <th>Author</th>
+                        <th>Date</th>
                     </tr>
-                }</For>
+                    <For each={commits()}>{(commit, _) =>
+                        <tr>
+                            <td></td>
+                            <td>{commit.Description}</td>
+                            <td>{commit.Author}</td>
+                            <td>{commit.Date}</td>
+                        </tr>
+                    }</For>
+                </tbody>
             </table>
         </div>
     );
