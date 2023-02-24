@@ -27,7 +27,7 @@ impl App {
     }
 
     // click on a tab to go to another repo view
-    pub fn switch_repository(&self, repo: Repository) {
+    pub fn switch_repository(&mut self, repo: Repository) {
         self.selected_repository = repo;
     }
 }

@@ -1,6 +1,6 @@
 export default function SidePanel() {
     return (
-        <div>
+        <div class="panel-wrapper">
             This is the left side panel
         </div>
     );
