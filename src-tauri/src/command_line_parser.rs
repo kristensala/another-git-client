@@ -1,5 +1,16 @@
 use std::str::FromStr;
 
+use serde::Serialize;
+
+#[derive(Debug, Serialize)]
+pub struct Branch {
+    pub name: String,
+    pub is_active: bool
+}
+
+#[derive(Debug)]
+pub struct ParseBranchError;
+
 #[derive(Debug)]
 pub struct Commit {
     pub author: Option<String>,
@@ -53,3 +64,23 @@ impl FromStr for Commit {
         return Ok(commit);
     }
 }
+
+impl FromStr for Branch {
+    type Err = ParseBranchError;
+
+    fn from_str(line: &str) -> Result<Self, Self::Err> {
+        if line.starts_with("*") {
+            let split_line = line.split("*").collect::<Vec<&str>>();
+            return Ok(Branch {
+                name: split_line[1].trim().to_string(),
+                is_active: true
+            });
+        }
+
+        return Ok(Branch {
+            name: line.to_string(),
+            is_active: false
+        });
+    }
+}
+

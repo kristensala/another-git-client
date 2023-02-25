@@ -2,11 +2,17 @@ import { invoke } from "@tauri-apps/api";
 import { createEffect, createSignal, For } from "solid-js";
 import "../styles/side-panel.scss";
 
+
+type Branch = {
+    name: string,
+    isActive: boolean
+}
+
 export default function SidePanel() {
-    const [localBranches, setLocalBranches] = createSignal<string[]>([]);
+    const [localBranches, setLocalBranches] = createSignal<Branch[]>([]);
 
     createEffect(() => {
-        //todo: get local BRANCHES
+        //todo: setLocalBranches
     });
 
     function changeDir() {
@@ -15,6 +21,22 @@ export default function SidePanel() {
 
     function getDir() {
         invoke("get_current_working_dir").then((res) => console.log(res));
+    }
+
+    function getBranches() {
+        invoke("git_branch_command").then((res) => {
+            let list = res as Branch[];
+            console.log(list);
+        });
+    }
+
+    function changeBranch(newBranch: string): void {
+        //TODO: trigger rust git checkout command
+    }
+
+    function isActiveBranch(branch: string): boolean {
+        // todo: if branch starts with *, it is active
+        return false;
     }
 
     return (
@@ -28,7 +50,7 @@ export default function SidePanel() {
                 <span>BRANCHES</span>
                 <For each={localBranches()}>
                     {(branch, _) =>
-                        <span>{branch}</span> 
+                        <span onclick={() => changeBranch(branch.name)}>{branch.name}</span> 
                     }
                 </For>
             </section>
@@ -36,8 +58,10 @@ export default function SidePanel() {
             <section class="panel-section--stashes">
                 <span>STASHES</span>
             </section>
+
             <button onclick={changeDir}>change dir</button>
             <button onclick={getDir}>get dir</button>
+            <button onclick={getBranches}>localBranches</button>
         </div>
     );
 }

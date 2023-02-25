@@ -3,7 +3,7 @@ use std::str;
 
 use anyhow::Result;
 
-use crate::command_line_parser::Commit;
+use crate::command_line_parser::{Commit, Branch};
 
 #[tauri::command]
 pub fn git_log_command() {
@@ -24,15 +24,15 @@ pub fn git_log_command() {
 
 //https://github.com/tauri-apps/tauri/discussions/1336
 #[tauri::command]
-pub fn git_branch_command() -> Vec<String> {
+pub fn git_branch_command() -> Vec<Branch> {
     let mut command = Command::new("git");
     command.arg("branch");
 
     let output = command.output().expect("git branch command failed");
     let output_utf8 = str::from_utf8(&output.stdout).unwrap();
     
-    let local_branches: Vec<String> = output_utf8.lines()
-        .map(|x| x.to_string())
+    let local_branches: Vec<Branch> = output_utf8.lines()
+        .map(|x| x.parse::<Branch>().unwrap())
         .collect();
 
     return local_branches;

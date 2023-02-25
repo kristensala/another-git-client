@@ -22,9 +22,9 @@ fn main() {
     tauri::Builder::default()
         .manage(App(Mutex::new(AppState::init())))
         .invoke_handler(tauri::generate_handler![ping])
-        .invoke_handler(tauri::generate_handler![git_command_handler::git_log_command])
-        .invoke_handler(tauri::generate_handler![git_command_handler::git_branch_command])
-        .invoke_handler(tauri::generate_handler![app_command_handler::get_current_working_dir, app_command_handler::change_dir])
+        .invoke_handler(tauri::generate_handler![app_command_handler::get_current_working_dir
+            , app_command_handler::change_dir
+            , git_command_handler::git_branch_command])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
