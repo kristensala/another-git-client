@@ -1,3 +1,3 @@
 # Another Git Client
 ## Setup
-Run `cargo tauri run`
+Run `cargo tauri dev`
