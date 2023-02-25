@@ -12,7 +12,6 @@ pub mod command_line_parser;
 pub mod git_command_handler;
 pub mod app;
 pub mod app_command_handler;
-pub mod repository;
 
 #[tauri::command]
 fn ping() -> String {
@@ -21,7 +20,7 @@ fn ping() -> String {
 
 fn main() {
     tauri::Builder::default()
-        .manage(AppState(Mutex::new(App::init())))
+        .manage(App(Mutex::new(AppState::init())))
         .invoke_handler(tauri::generate_handler![ping])
         .invoke_handler(tauri::generate_handler![git_command_handler::git_log_command])
         .invoke_handler(tauri::generate_handler![git_command_handler::git_branch_command])

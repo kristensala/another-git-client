@@ -2,9 +2,7 @@ use std::process::Command;
 use std::str;
 
 use anyhow::Result;
-use tauri::State;
 
-use crate::app::{App, AppState};
 use crate::command_line_parser::Commit;
 
 #[tauri::command]

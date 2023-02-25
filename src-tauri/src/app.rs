@@ -1,17 +1,17 @@
 use std::sync::Mutex;
 
 #[derive(Debug, Clone)]
-pub struct App {
-    pub current_dir: String
+pub struct AppState {
+    pub current_dir: Option<String>,
 }
 
 #[derive(Debug)]
-pub struct AppState(pub Mutex<App>);
+pub struct App(pub Mutex<AppState>);
 
-impl App {
-    pub fn init() -> App {
-        return App {
-            current_dir: String::from("test")
+impl AppState {
+    pub fn init() -> AppState {
+        return AppState {
+            current_dir: None, // TODO: if repo saved, take the first one
         };
     }
 }

@@ -1,4 +1,5 @@
 import { createSignal, For, onMount } from "solid-js";
+import "../styles/git-history.scss";
 
 type Commit = {
     Description: string,
@@ -9,19 +10,15 @@ type Commit = {
 export default function GitHistory() {
     const [commits, setCommits] = createSignal<Commit[]>([]);
 
-    onMount(() => {
-        //TODO: setCommits run a tauri command
-    });
-
     return (
         <div class="git-history-container">
             <table class="history-table">
                 <tbody>
                     <tr>
-                        <th>Graph</th>
+                        <th style="width:5%">Graph</th>
                         <th>Description</th>
-                        <th>Author</th>
-                        <th>Date</th>
+                        <th style="width:20%">Author</th>
+                        <th style="width:20%">Date</th>
                     </tr>
                     <For each={commits()}>{(commit, _) =>
                         <tr>
