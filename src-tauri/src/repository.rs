@@ -7,11 +7,11 @@ pub struct Repository {
 }
 
 impl Repository {
-    pub fn create() -> Result<Repository> {
-        todo!("is repo exists in memory dont allow to make another one");
+    pub fn get(name: &str) -> Repository {
+        todo!();
     }
 
-    pub fn get_working_branch() -> String {
-        todo!();
+    pub fn create() -> Result<Repository> {
+        todo!("is repo exists in memory dont allow to make another one");
     }
 }

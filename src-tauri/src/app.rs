@@ -1,33 +1,18 @@
-use anyhow::Result;
+use std::sync::Mutex;
 
-use crate::repository::Repository;
-
-pub enum Theme {
-    Dark,
-    Light
-}
-
-pub struct Settings {
-    pub color: Theme
-}
-
-// here is application logic
-// saved repositories
-// settings
-// git flow settings
-// etc.
+#[derive(Debug, Clone)]
 pub struct App {
-    pub repositories: Vec<Repository>,
-    pub selected_repository: Repository,
+    pub current_dir: String
 }
+
+#[derive(Debug)]
+pub struct AppState(pub Mutex<App>);
 
 impl App {
-    pub fn load_repositories() -> Result<Vec<Repository>> {
-        todo!();
-    }
-
-    // click on a tab to go to another repo view
-    pub fn switch_repository(&mut self, repo: Repository) {
-        self.selected_repository = repo;
+    pub fn init() -> App {
+        return App {
+            current_dir: String::from("test")
+        };
     }
 }
+
