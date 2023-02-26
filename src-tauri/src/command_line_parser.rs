@@ -18,6 +18,9 @@ pub struct Commit {
     pub date: Option<String>,
 }
 
+#[derive(Debug)]
+pub struct ParseCommitError;
+
 impl Commit {
     fn new() -> Commit {
         return Commit {
@@ -28,10 +31,6 @@ impl Commit {
     }
 }
 
-#[derive(Debug)]
-pub struct ParseCommitError;
-
-// TODO: this looks horrible
 impl FromStr for Commit {
     type Err = ParseCommitError;
 
@@ -50,6 +49,7 @@ impl FromStr for Commit {
                 continue;
             }
 
+            // What if my commit message starts with Author: or Date:???
             if line.starts_with("Author:") {
                 let author_line = line.split(":").collect::<Vec<&str>>();
                 commit.author = Some(author_line[1].trim().to_string());

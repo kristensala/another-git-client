@@ -1,12 +1,13 @@
 use std::process::Command;
 use std::str;
 
-use anyhow::Result;
+use anyhow::{Result, Ok};
+use tauri::State;
 
-use crate::command_line_parser::{Commit, Branch};
+use crate::{command_line_parser::{Commit, Branch}, app::App};
 
 #[tauri::command]
-pub fn git_log_command() {
+pub fn git_log_command(app: State<App>) -> Vec<Commit> {
     // TODO: get changed files and the changed contents
     let mut command = Command::new("git");
     command.arg("log");
@@ -19,12 +20,12 @@ pub fn git_log_command() {
         .map(|x| x.parse::<Commit>().unwrap())
         .collect::<Vec<Commit>>();
     
-    println!("{:#?}", commits_parsed);
+    return commits_parsed;
 }
 
 //https://github.com/tauri-apps/tauri/discussions/1336
 #[tauri::command]
-pub fn git_branch_command() -> Vec<Branch> {
+pub fn git_branch_command(app: State<App>) -> Vec<Branch> {
     let mut command = Command::new("git");
     command.arg("branch");
 
@@ -38,32 +39,47 @@ pub fn git_branch_command() -> Vec<Branch> {
     return local_branches;
 }
 
-pub fn git_new_branch_command(branch_name: &str) {
+pub fn git_new_branch_command(app: State<App>, branch_name: &str) {
     todo!("create a new branch and checkout");
 }
 
 #[tauri::command]
-pub fn git_checkout_command(target_branch: &str) -> Result<()> {
+pub fn git_checkout_command(app: State<App>, target_branch: &str) -> Result<()> {
+    let state_guard = app.0.lock().unwrap();
+
+    let mut command = Command::new("git");
+    command.arg("checkout");
+    command.arg(target_branch);
+
+    command.current_dir(state_guard.current_dir.unwrap());
+    let output = command.output().expect("checkout failed");
+
+    // Possible errors
+    // * branch does not exist
+    // * invalid working dir
+    // * uncommited changes
+    //
+
+    return Ok(());
+}
+
+#[tauri::command]
+pub fn git_commit_command(app: State<App>, message: &str) -> Result<()> {
     todo!();
 }
 
 #[tauri::command]
-pub fn git_commit_command(message: &str) -> Result<()> {
+pub fn git_push_command(app: State<App>, branch: &str) -> Result<()> {
     todo!();
 }
 
 #[tauri::command]
-pub fn git_push_command(branch: &str) -> Result<()> {
-    todo!();
-}
-
-#[tauri::command]
-pub fn git_stash_command(files: Vec<&str>) {
+pub fn git_stash_command(app: State<App>, files: Vec<&str>) {
     todo!("if files empty stash all");
 }
 
 #[tauri::command]
-pub fn git_diff_command(file_path: &str) {
+pub fn git_diff_command(app: State<App>, file_path: &str) {
     if file_path.is_empty() {
         let mut command = Command::new("git");
         command.arg("diff");
